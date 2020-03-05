@@ -1,24 +1,31 @@
 # Pegnet Chainlink contract
 
 Implementation of a [Chainlink requesting contract](https://docs.chain.link/docs/create-a-chainlinked-project) to fetch peg attributes from 
-[Pegnet Explorer API](https://pegnetmarketcap.com/api/asset/all).
-
+[Pegnet Explorer API](https://pegnetmarketcap.com/).
 
 This chainlink smart contract can be used to query and create Chainlink oracles for a given peg price, volume, supply or price change by peg symbol.
 
-
-
 ## How to run
-1. Compile and deploy the contracts to your network of choice.
 
-2. Fund the contract with Chainlink token. 
-For Ropsten you get request chainlink token at https://ropsten.chain.link/
+1. Go to the contract file /contracts/PegnetChainlinkConsumer.sol and uncomment the line 10 of the file to set the link price for each request.
+
+For mainnet request prices check the price of your chosen of your oracle provider node here https://docs.chain.link/docs/decentralized-oracles-ethereum-mainnet#config
+For Testnet deployments request prices are simplified to 1 Link for 1 request.
+
+2. Compile and deploy the contracts to your network of choice.
+
+3. Fund the contract with Chainlink token. 
+For Ropsten you get request chainlink token from the faucet at https://ropsten.chain.link/
 
 
-3. To request current price call the `requestPegCurrentPrice` method
-4. To request last updated timestamp call the `requestPegLastUpdate` method
-5. To request last volume of the pegged token call the `requestPegVolume` method.
-6. To request last reported of the pegged token call the `requestPegSupply` method.
+
+Method definitions -
+The contract allows any smart contract to request the following attibutes of each token.
+
+1. To request current price of a pegged token call the `requestPegCurrentPrice` method
+2. To request last updated timestamp of a pegged token call the `requestPegLastUpdate` method
+3. To request last volume of the pegged token call the `requestPegVolume` method.
+4. To request last reported of the pegged token call the `requestPegSupply` method.
 
 
 Each method takes in three arguments.

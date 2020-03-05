@@ -4,7 +4,10 @@ import "https://github.com/smartcontractkit/chainlink/evm-contracts/src/v0.4/Cha
 import "https://github.com/smartcontractkit/chainlink/evm-contracts/src/v0.4/vendor/Ownable.sol";
 
 contract PegnetChainLinkConsumer is ChainlinkClient, Ownable {
-  uint256 constant private ORACLE_PAYMENT = 1 * LINK;
+  // For testnet deployment each request costs 1 link
+  // For mainnet deployment check the cost of request for your oracle provider here https://docs.chain.link/docs/decentralized-oracles-ethereum-mainnet#config
+  // uncomment this and change this to your network deployment 
+  // uint256 constant private ORACLE_PAYMENT = 1 * LINK;
 
   uint256 public currentPrice;
   uint256 public lastUpdate;
