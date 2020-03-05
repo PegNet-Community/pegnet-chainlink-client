@@ -7,24 +7,30 @@ contract PegnetChainLinkConsumer is ChainlinkClient, Ownable {
   uint256 constant private ORACLE_PAYMENT = 1 * LINK;
 
   uint256 public currentPrice;
-  int256 public changeDay;
-  bytes32 public lastMarket;
+  uint256 public lastUpdate;
+  uint256 public volume;
+  uint256 public supply;
 
-  event RequestEthereumPriceFulfilled(
+  event RequestCurrentPriceFulfilled(
     bytes32 indexed requestId,
-    uint256 indexed price
+    uint256 indexed currentPrice
   );
 
-  event RequestEthereumChangeFulfilled(
+  event RequestLastUpdateFulfilled(
     bytes32 indexed requestId,
-    int256 indexed change
+    uint256 indexed lastUpdate
   );
 
-  event RequestEthereumLastMarket(
+  event RequestVolumeFulfilled(
     bytes32 indexed requestId,
-    bytes32 indexed market
+    uint256 indexed volume
   );
 
+  event RequestSupplyFulfilled(
+    bytes32 indexed requestId,
+    uint256 indexed supply
+  );
+  
   constructor() public Ownable() {
     setPublicChainlinkToken();
   }
@@ -41,14 +47,14 @@ contract PegnetChainLinkConsumer is ChainlinkClient, Ownable {
     sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
   }
 
-  function requestPegPriceChange(address _oracle, string _jobId, string symbol)
+  function requestPegLastUpdate(address _oracle, string _jobId, string symbol)
     public 
     onlyOwner
   {
-    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fulfillPegPriceChange.selector);
+    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fulfillPegLastUpdate.selector);
     req.add("get", "https://pegnetmarketcap.com/api/asset");
     req.add("extPath", symbol);
-    req.add("path", "price_change");
+    req.add("path", "updated_at");
     req.addInt("times", 10000);
     sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);      
   }      
@@ -83,32 +89,32 @@ contract PegnetChainLinkConsumer is ChainlinkClient, Ownable {
     public
     recordChainlinkFulfillment(_requestId)
   {
-    emit RequestEthereumPriceFulfilled(_requestId, _price);
+    emit RequestCurrentPriceFulfilled(_requestId, _price);
     currentPrice = _price;
   }
 
-  function fulfillPegPriceChange(bytes32 _requestId, int256 _change)
+  function fulfillPegLastUpdate(bytes32 _requestId, uint256 _change)
     public
     recordChainlinkFulfillment(_requestId)
   {
-    emit RequestEthereumChangeFulfilled(_requestId, _change);
-    changeDay = _change;
+    emit RequestLastUpdateFulfilled(_requestId, _change);
+    lastUpdate = _change;
   }
 
-  function fulfillPegVolume(bytes32 _requestId, int256 _change)
+  function fulfillPegVolume(bytes32 _requestId, uint256 _change)
     public
     recordChainlinkFulfillment(_requestId)
   {
-    emit RequestEthereumChangeFulfilled(_requestId, _change);
-    changeDay = _change;
+    emit RequestVolumeFulfilled(_requestId, _change);
+    volume = _change;
   }
   
-   function fulfillPegSupply(bytes32 _requestId, int256 _change)
+   function fulfillPegSupply(bytes32 _requestId, uint256 _change)
     public
     recordChainlinkFulfillment(_requestId)
   {
-    emit RequestEthereumChangeFulfilled(_requestId, _change);
-    changeDay = _change;
+    emit RequestSupplyFulfilled(_requestId, _change);
+    supply = _change;
   } 
 
   function getChainlinkToken() public view returns (address) {
