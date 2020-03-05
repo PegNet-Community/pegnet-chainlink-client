@@ -55,7 +55,6 @@ contract PegnetChainLinkConsumer is ChainlinkClient, Ownable {
     req.add("get", "https://pegnetmarketcap.com/api/asset");
     req.add("extPath", symbol);
     req.add("path", "updated_at");
-    req.addInt("times", 10000);
     sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);      
   }      
   
