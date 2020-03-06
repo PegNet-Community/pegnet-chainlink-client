@@ -31,7 +31,7 @@ Sample response would look like
 {"symbol":"XAU","price":"1687.745"},{"symbol":"LINK","price":"4.664"}]}
 ```
 
-### To deploy the contrac
+### To deploy the contracts
 1. Go to the contract file /contracts/PegnetChainlinkConsumer.sol and uncomment the line 10 of the file to set the link price for each request.
 
 For mainnet request prices check the price of your chosen of your oracle provider node here https://docs.chain.link/docs/decentralized-oracles-ethereum-mainnet#config
