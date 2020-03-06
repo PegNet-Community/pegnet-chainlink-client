@@ -1,10 +1,8 @@
-# Pegnet Chainlink contract
-
-
-
 ## This repository contains two parts
-1. Contracts contains an implementation of Chainlink oracle contract which can be used by any Ethereum dApp to request data for any pegnet.
-2. Server repository scrapes data from Chainlink feed from https://feeds.chain.link/ and returns prices for all symbols with USD pairs
+1. ### Pegnet Chainlink Contracts 
+Contracts contains an implementation of Chainlink oracle contract which can be used by any Ethereum dApp to request data for any pegnet.
+2. ### Chainlink Peg data prices 
+Server repository scrapes data from Chainlink feed from https://feeds.chain.link/ and returns prices for all symbols with USD pairs
 
 
 Implementation of a [Chainlink requesting contract](https://docs.chain.link/docs/create-a-chainlinked-project) to fetch peg attributes from 
@@ -14,6 +12,26 @@ This chainlink smart contract can be used to query and create Chainlink oracles 
 
 ## How to run
 
+### To run the scraping server
+The server is an Express/NodeJS app.
+```
+cd server
+sudo npm install
+npm start
+```
+This will start the scraping server at port 3000. The latest chainlink feed data can then be requested by sending a GET request to http://localhost:3000
+This can further be deployed on a instance to provide a static IP which all pegnet Oracle miners can query from.
+Sample response would look like
+
+```
+{"data":[{"symbol":"ETH","price":"238.245"},{"symbol":"BTC","price":"9118.641"},
+{"symbol":"AUD","price":"0.663"},{"symbol":"EUR","price":"1.131497"},
+{"symbol":"CHF","price":"1.068"},{"symbol":"GBP","price":"1.299"},
+{"symbol":"JPY","price":"0.00950606"},{"symbol":"XAG","price":"17.308"},
+{"symbol":"XAU","price":"1687.745"},{"symbol":"LINK","price":"4.664"}]}
+```
+
+### To deploy the contrac
 1. Go to the contract file /contracts/PegnetChainlinkConsumer.sol and uncomment the line 10 of the file to set the link price for each request.
 
 For mainnet request prices check the price of your chosen of your oracle provider node here https://docs.chain.link/docs/decentralized-oracles-ethereum-mainnet#config
