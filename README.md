@@ -1,7 +1,8 @@
 ## This repository contains two parts
 1. ### Pegnet Chainlink Contracts 
 Contracts contains an implementation of Chainlink oracle contract which can be used by any Ethereum dApp to request data for any pegnet.
-2. ### Chainlink Peg data prices 
+
+2. ### Chainlink Price Scraper Server 
 Server repository scrapes data from Chainlink feed from https://feeds.chain.link/ and returns prices for all symbols with USD pairs
 
 
